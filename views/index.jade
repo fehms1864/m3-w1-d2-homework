@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  // Main Navigation
+  nav#navigation.navbar.navbar-expand-md.navbar-light.text-center.justify-content-center
+    .container
+      ul(v-for="item in navItems", class="navbar-nav mx-auto justify-content-around")
+        li.nav-item.px-2
+          a.nav-link(href="#", @mouseover="hoverBackground(true)", @mouseleave="hoverBackground(false)") {{item.page}}
+
+  // Main Container
+  .container-fluid
+    .row.justify-content-center
+      #container.col-sm-8
+        vue-food-blogger-header
+        main
+          // Chili Image and Comment header
+          aside#photos.row
+            vue-chili-image
+            vue-comments-header.text-uppercase.align-self-center.ml-2
+
+          // Comment Posts Section
+          section#blogposts.row.flex.flex-row-reverse
+            div(v-for="post in posts", class="post m-4 p-4 col-sm-9 col-xl-10")
+              img(:src="profileImage", @click="showInfoBox(post)", width="90", class="mr-2 mb-3", role="button")
+              span.author {{post.author}} —
+              span.date {{post.date}}
+              span.reply REPLY
+              p {{post.description}}
+
+            div(v-if="selectedPost", id="infobox")
+              p.float-right(role="button", @click="hideInfoBox") x
+              h3.my-4 {{selectedPost.author}}
+              p
+                strong Foodie Level:
+                | {{selectedPost.foodieLevel}}
+              strong Bio:
+              p {{selectedPost.bioInfo}}
+              button(@click="hideInfoBox") Close
